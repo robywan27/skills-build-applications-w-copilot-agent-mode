@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl } from '../utils/api';
+import { API_ENDPOINTS } from '../utils/api';
 
 export default function Activities() {
   const [activities, setActivities] = useState([]);
@@ -9,7 +9,7 @@ export default function Activities() {
   useEffect(() => {
     async function fetchActivities() {
       try {
-        const response = await fetch(buildApiUrl('activities'));
+        const response = await fetch(API_ENDPOINTS.ACTIVITIES);
         if (!response.ok) throw new Error('Failed to load activities');
         const payload = await response.json();
         const data = Array.isArray(payload) ? payload : payload.data ?? [];
