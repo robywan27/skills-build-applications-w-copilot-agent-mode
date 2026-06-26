@@ -1,7 +1,9 @@
+import cors from 'cors';
 import express from 'express';
 import { Activity, connectToDatabase, Leaderboard, Team, User, Workout } from './models';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const port = Number(process.env.PORT || 8000);
@@ -14,6 +16,10 @@ async function sendCollection(res: express.Response, loader: () => Promise<unkno
   const data = await loader();
   res.json({ apiUrl: `${baseUrl}${routePath}`, data });
 }
+
+app.get('/', (_req, res) => {
+  res.type('html').send(`<!doctype html><html><body><h1>OctoFit Tracker API</h1><p>Use /api/users, /api/teams, /api/activities, /api/leaderboard, or /api/workouts.</p></body></html>`);
+});
 
 app.get(['/api/health', '/api/health/'], (_req, res) => {
   res.json({

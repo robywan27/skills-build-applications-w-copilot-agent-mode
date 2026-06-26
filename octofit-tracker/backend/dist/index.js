@@ -3,9 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const models_1 = require("./models");
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 const port = Number(process.env.PORT || 8000);
 const codespaceName = process.env.CODESPACE_NAME;
@@ -16,6 +18,9 @@ async function sendCollection(res, loader, routePath) {
     const data = await loader();
     res.json({ apiUrl: `${baseUrl}${routePath}`, data });
 }
+app.get('/', (_req, res) => {
+    res.type('html').send(`<!doctype html><html><body><h1>OctoFit Tracker API</h1><p>Use /api/users, /api/teams, /api/activities, /api/leaderboard, or /api/workouts.</p></body></html>`);
+});
 app.get(['/api/health', '/api/health/'], (_req, res) => {
     res.json({
         status: 'ok',
