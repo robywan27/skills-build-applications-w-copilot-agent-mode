@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '../utils/api';
+import { getApiEndpoint } from '../utils/api';
 
+// API endpoint: https://codespace-8000.app.github.dev/api/users/
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +10,8 @@ export default function Users() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await fetch(API_ENDPOINTS.USERS);
+        const endpoint = getApiEndpoint('users');
+        const response = await fetch(endpoint);
         if (!response.ok) throw new Error('Failed to load users');
         const payload = await response.json();
         const data = Array.isArray(payload) ? payload : payload.data ?? [];

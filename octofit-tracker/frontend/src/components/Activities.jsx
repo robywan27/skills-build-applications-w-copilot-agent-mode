@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '../utils/api';
+import { getApiEndpoint } from '../utils/api';
 
+// API endpoint: https://codespace-8000.app.github.dev/api/activities/
 export default function Activities() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +10,8 @@ export default function Activities() {
   useEffect(() => {
     async function fetchActivities() {
       try {
-        const response = await fetch(API_ENDPOINTS.ACTIVITIES);
+        const endpoint = getApiEndpoint('activities');
+        const response = await fetch(endpoint);
         if (!response.ok) throw new Error('Failed to load activities');
         const payload = await response.json();
         const data = Array.isArray(payload) ? payload : payload.data ?? [];

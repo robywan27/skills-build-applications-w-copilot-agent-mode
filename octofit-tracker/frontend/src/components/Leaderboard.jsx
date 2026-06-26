@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '../utils/api';
+import { getApiEndpoint } from '../utils/api';
 
+// API endpoint: https://codespace-8000.app.github.dev/api/leaderboard/
 export default function Leaderboard() {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +10,8 @@ export default function Leaderboard() {
   useEffect(() => {
     async function fetchLeaderboard() {
       try {
-        const response = await fetch(API_ENDPOINTS.LEADERBOARD);
+        const endpoint = getApiEndpoint('leaderboard');
+        const response = await fetch(endpoint);
         if (!response.ok) throw new Error('Failed to load leaderboard');
         const payload = await response.json();
         const data = Array.isArray(payload) ? payload : payload.data ?? [];

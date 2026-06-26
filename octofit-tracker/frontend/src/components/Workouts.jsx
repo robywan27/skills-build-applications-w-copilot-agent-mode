@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '../utils/api';
+import { getApiEndpoint } from '../utils/api';
 
+// API endpoint: https://codespace-8000.app.github.dev/api/workouts/
 export default function Workouts() {
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +10,8 @@ export default function Workouts() {
   useEffect(() => {
     async function fetchWorkouts() {
       try {
-        const response = await fetch(API_ENDPOINTS.WORKOUTS);
+        const endpoint = getApiEndpoint('workouts');
+        const response = await fetch(endpoint);
         if (!response.ok) throw new Error('Failed to load workouts');
         const payload = await response.json();
         const data = Array.isArray(payload) ? payload : payload.data ?? [];
