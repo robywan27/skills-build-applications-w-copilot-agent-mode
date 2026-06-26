@@ -33,10 +33,11 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Workout = exports.Leaderboard = exports.Activity = exports.Team = exports.User = void 0;
-exports.connectToDatabase = connectToDatabase;
-exports.disconnectFromDatabase = disconnectFromDatabase;
+exports.disconnectFromDatabase = exports.connectToDatabase = exports.Workout = exports.Leaderboard = exports.Activity = exports.Team = exports.User = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
+const database_1 = require("./config/database");
+Object.defineProperty(exports, "connectToDatabase", { enumerable: true, get: function () { return database_1.connectToDatabase; } });
+Object.defineProperty(exports, "disconnectFromDatabase", { enumerable: true, get: function () { return database_1.disconnectFromDatabase; } });
 const userSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -73,9 +74,3 @@ exports.Team = mongoose_1.default.models.Team || mongoose_1.default.model('Team'
 exports.Activity = mongoose_1.default.models.Activity || mongoose_1.default.model('Activity', activitySchema);
 exports.Leaderboard = mongoose_1.default.models.Leaderboard || mongoose_1.default.model('Leaderboard', leaderboardSchema);
 exports.Workout = mongoose_1.default.models.Workout || mongoose_1.default.model('Workout', workoutSchema);
-async function connectToDatabase(uri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db') {
-    await mongoose_1.default.connect(uri);
-}
-async function disconnectFromDatabase() {
-    await mongoose_1.default.disconnect();
-}

@@ -1,4 +1,5 @@
-import { connectToDatabase, disconnectFromDatabase, Activity, Leaderboard, Team, User, Workout } from '../models';
+import { Activity, Leaderboard, Team, User, Workout } from '../models';
+import { connectToDatabase, disconnectFromDatabase } from '../config/database';
 
 // Seed the octofit_db database with test data
 async function seedDatabase() {

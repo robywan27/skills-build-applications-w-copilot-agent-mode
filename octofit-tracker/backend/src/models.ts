@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { connectToDatabase, disconnectFromDatabase } from './config/database';
 
 const userSchema = new Schema(
   {
@@ -57,10 +58,4 @@ export const Activity = mongoose.models.Activity || mongoose.model('Activity', a
 export const Leaderboard = mongoose.models.Leaderboard || mongoose.model('Leaderboard', leaderboardSchema);
 export const Workout = mongoose.models.Workout || mongoose.model('Workout', workoutSchema);
 
-export async function connectToDatabase(uri: string = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db') {
-  await mongoose.connect(uri);
-}
-
-export async function disconnectFromDatabase() {
-  await mongoose.disconnect();
-}
+export { connectToDatabase, disconnectFromDatabase };
