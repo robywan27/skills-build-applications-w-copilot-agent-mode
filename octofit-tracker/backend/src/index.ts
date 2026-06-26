@@ -10,9 +10,9 @@ const baseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
   : 'http://localhost:8000';
 
-async function sendCollection(res: express.Response, loader: () => Promise<unknown[]>) {
+async function sendCollection(res: express.Response, loader: () => Promise<unknown[]>, routePath: string) {
   const data = await loader();
-  res.json({ data });
+  res.json({ apiUrl: `${baseUrl}${routePath}`, data });
 }
 
 app.get(['/api/health', '/api/health/'], (_req, res) => {
@@ -24,7 +24,7 @@ app.get(['/api/health', '/api/health/'], (_req, res) => {
 });
 
 app.get(['/api/users', '/api/users/'], async (_req, res) => {
-  await sendCollection(res, () => User.find({}).lean());
+  await sendCollection(res, () => User.find({}).lean(), '/api/users/');
 });
 
 app.post(['/api/users', '/api/users/'], async (req, res) => {
@@ -33,7 +33,7 @@ app.post(['/api/users', '/api/users/'], async (req, res) => {
 });
 
 app.get(['/api/teams', '/api/teams/'], async (_req, res) => {
-  await sendCollection(res, () => Team.find({}).lean());
+  await sendCollection(res, () => Team.find({}).lean(), '/api/teams/');
 });
 
 app.post(['/api/teams', '/api/teams/'], async (req, res) => {
@@ -42,7 +42,7 @@ app.post(['/api/teams', '/api/teams/'], async (req, res) => {
 });
 
 app.get(['/api/activities', '/api/activities/'], async (_req, res) => {
-  await sendCollection(res, () => Activity.find({}).lean());
+  await sendCollection(res, () => Activity.find({}).lean(), '/api/activities/');
 });
 
 app.post(['/api/activities', '/api/activities/'], async (req, res) => {
@@ -51,7 +51,7 @@ app.post(['/api/activities', '/api/activities/'], async (req, res) => {
 });
 
 app.get(['/api/leaderboard', '/api/leaderboard/'], async (_req, res) => {
-  await sendCollection(res, () => Leaderboard.find({}).lean());
+  await sendCollection(res, () => Leaderboard.find({}).lean(), '/api/leaderboard/');
 });
 
 app.post(['/api/leaderboard', '/api/leaderboard/'], async (req, res) => {
@@ -60,7 +60,7 @@ app.post(['/api/leaderboard', '/api/leaderboard/'], async (req, res) => {
 });
 
 app.get(['/api/workouts', '/api/workouts/'], async (_req, res) => {
-  await sendCollection(res, () => Workout.find({}).lean());
+  await sendCollection(res, () => Workout.find({}).lean(), '/api/workouts/');
 });
 
 app.post(['/api/workouts', '/api/workouts/'], async (req, res) => {

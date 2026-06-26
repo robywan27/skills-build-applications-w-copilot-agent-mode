@@ -12,9 +12,9 @@ const codespaceName = process.env.CODESPACE_NAME;
 const baseUrl = codespaceName
     ? `https://${codespaceName}-8000.app.github.dev`
     : 'http://localhost:8000';
-async function sendCollection(res, loader) {
+async function sendCollection(res, loader, routePath) {
     const data = await loader();
-    res.json({ data });
+    res.json({ apiUrl: `${baseUrl}${routePath}`, data });
 }
 app.get(['/api/health', '/api/health/'], (_req, res) => {
     res.json({
@@ -24,35 +24,35 @@ app.get(['/api/health', '/api/health/'], (_req, res) => {
     });
 });
 app.get(['/api/users', '/api/users/'], async (_req, res) => {
-    await sendCollection(res, () => models_1.User.find({}).lean());
+    await sendCollection(res, () => models_1.User.find({}).lean(), '/api/users/');
 });
 app.post(['/api/users', '/api/users/'], async (req, res) => {
     const newUser = await models_1.User.create(req.body);
     res.status(201).json({ apiUrl: `${baseUrl}/api/users/`, data: newUser });
 });
 app.get(['/api/teams', '/api/teams/'], async (_req, res) => {
-    await sendCollection(res, () => models_1.Team.find({}).lean());
+    await sendCollection(res, () => models_1.Team.find({}).lean(), '/api/teams/');
 });
 app.post(['/api/teams', '/api/teams/'], async (req, res) => {
     const newTeam = await models_1.Team.create(req.body);
     res.status(201).json({ apiUrl: `${baseUrl}/api/teams/`, data: newTeam });
 });
 app.get(['/api/activities', '/api/activities/'], async (_req, res) => {
-    await sendCollection(res, () => models_1.Activity.find({}).lean());
+    await sendCollection(res, () => models_1.Activity.find({}).lean(), '/api/activities/');
 });
 app.post(['/api/activities', '/api/activities/'], async (req, res) => {
     const newActivity = await models_1.Activity.create(req.body);
     res.status(201).json({ apiUrl: `${baseUrl}/api/activities/`, data: newActivity });
 });
 app.get(['/api/leaderboard', '/api/leaderboard/'], async (_req, res) => {
-    await sendCollection(res, () => models_1.Leaderboard.find({}).lean());
+    await sendCollection(res, () => models_1.Leaderboard.find({}).lean(), '/api/leaderboard/');
 });
 app.post(['/api/leaderboard', '/api/leaderboard/'], async (req, res) => {
     const newEntry = await models_1.Leaderboard.create(req.body);
     res.status(201).json({ apiUrl: `${baseUrl}/api/leaderboard/`, data: newEntry });
 });
 app.get(['/api/workouts', '/api/workouts/'], async (_req, res) => {
-    await sendCollection(res, () => models_1.Workout.find({}).lean());
+    await sendCollection(res, () => models_1.Workout.find({}).lean(), '/api/workouts/');
 });
 app.post(['/api/workouts', '/api/workouts/'], async (req, res) => {
     const newWorkout = await models_1.Workout.create(req.body);
